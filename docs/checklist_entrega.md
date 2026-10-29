@@ -1,0 +1,14 @@
+# Checklist de entrega
+- [ ] Diagrama com atributos, PK, FK, obrigatoriedades e cardinalidades.
+- [ ] SQL PostgreSQL cria tabelas sem apagar dados.
+- [ ] Splash e count(1) das três tabelas.
+- [ ] Relatório AVG/GROUP BY e relatório JOIN.
+- [ ] Inserir, remover com confirmação e atualizar nas três entidades.
+- [ ] Submenus repetem, permitem voltar e exibem atualização.
+- [ ] FK protege registros relacionados.
+- [ ] README Linux/VM.
+- [ ] PROMPTS.md atualizado com revisão efetiva.
+- [ ] Quatro integrantes com contribuições e commits próprios; professor precisa autorizar, pois edital pede cinco.
+- [ ] howardroatti colaborador.
+- [ ] Vídeo com todos os menus; link preenchido.
+- [ ] Clone limpo testado na VM; link enviado no AVA até 30/10/2026.

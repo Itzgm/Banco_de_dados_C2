@@ -1,0 +1,24 @@
+erDiagram
+    CLIENTES ||--o{ ATENDIMENTOS : solicita
+    FUNCIONARIOS ||--o{ ATENDIMENTOS : atende
+    CLIENTES {
+        integer id PK "NOT NULL"
+        varchar nome "NOT NULL"
+        varchar email UK "NOT NULL"
+        varchar telefone "NOT NULL"
+    }
+    FUNCIONARIOS {
+        integer id PK "NOT NULL"
+        varchar nome "NOT NULL"
+        varchar equipe "NOT NULL"
+    }
+    ATENDIMENTOS {
+        integer id PK "NOT NULL"
+        integer cliente_id FK "NOT NULL"
+        integer funcionario_id FK "NOT NULL"
+        varchar assunto "NOT NULL"
+        varchar descricao "NOT NULL"
+        timestamp data_abertura "NOT NULL"
+        timestamp data_fechamento "NULL enquanto aberto"
+        varchar status "ABERTO ou FECHADO"
+    }
