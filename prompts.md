@@ -102,3 +102,74 @@ Foram adicionados e executados 14 testes em `tests/test_postgres_queries.py`, co
 A sintaxe Python foi validada, `git diff --check` não apontou problemas e `git check-ignore .env` confirmou que as credenciais locais ficam fora do versionamento. Foi preparado um ambiente `.venv` local para a validação. A conexão com um servidor PostgreSQL real não foi testada: depende do banco e das credenciais locais, que não foram fornecidos.
 
 Referências consultadas: https://www.psycopg.org/docs/cursor.html, https://www.psycopg.org/docs/connection.html e https://bbc2.github.io/python-dotenv/.
+
+## 004 - Planejamento do projeto para quatro desenvolvedores
+
+- Data: 29/10/2026 (America/Sao_Paulo).
+- Fonte: usuário, via chat no Codex desktop.
+- Modelo: gpt-6.1-sol, conforme identificação disponibilizada pelo ambiente durante a elaboração do planejamento.
+- Effort configurado: não informado pela sessão.
+- Registro retrospectivo autorizado pelo usuário.
+
+### Prompt
+
+Você é um tech lead sênior. Sua tarefa é produzir um **documento de planejamento em Markdown** (descrição do projeto + divisão de tasks) para uma equipe de 4 desenvolvedores.
+
+## Regras importantes (leia antes de tudo)
+- **NÃO escreva código.** Nem Python, nem SQL, nem trechos de exemplo. O entregável é apenas texto de planejamento: descrições, listas, tabelas e critérios.
+- **O modelo de dados em SQL já existe** no projeto. Não crie nem proponha um novo schema. Se algo no modelo existente atrapalhar uma funcionalidade (ex.: falta uma coluna para a senha do atendente), registre isso como uma task ou uma decisão em aberto, sem escrever o SQL.
+- **O projeto já existe.** Antes de planejar, **analise o código e a estrutura que já estão no repositório e no PDF anexado** e identifique o que já está pronto, o que está incompleto e o que falta.
+- Se algo estiver ambíguo ou contradizer o PDF, siga o PDF e liste a dúvida em "decisões em aberto". Não invente requisitos.
+
+## Contexto do projeto
+Sistema para gerenciar chamados de atendimento em um contexto de suporte. A aplicação roda em **CLI com Python** e usa **PostgreSQL**.
+
+## Funcionalidades esperadas
+
+**Menu inicial**
+1 - Abrir um novo chamado
+2 - Verificar meus chamados
+3 - Login (atendente)
+0 - Sair
+
+**1 - Abrir um novo chamado**
+- Solicita o email e verifica se o cliente já existe.
+- Se não existir, inicia o cadastro: solicita nome e telefone e reutiliza o email informado.
+- Em qualquer etapa do cadastro deve haver a opção de **voltar** (para corrigir o email digitado errado).
+- Em seguida solicita o título e a descrição do ocorrido.
+- O chamado é criado com status `aberto`.
+
+**2 - Verificar meus chamados**
+- Solicita o email do cliente e confirma que ele existe e possui chamados.
+- Exibe os chamados em aberto desse cliente em um menu numerado, no mesmo estilo do anterior.
+- Ao escolher um chamado, mostra: Título, Descrição, Status e Atendente responsável.
+- Opções: 1 - Cancelar chamado (DELETE, para casos em que o próprio cliente já resolveu o problema; pedir confirmação) e 2 - Voltar.
+
+**3 - Login do atendente**
+- O login solicita **email e senha** (e não mais código de acesso).
+- Com o atendente logado, exibe o menu:
+  1 - Assumir um novo chamado
+  2 - Verificar histórico
+  3 - Meus chamados
+  0 - Sair
+- **1 - Assumir um novo chamado (automático):** o atendente não escolhe de uma lista. O sistema atribui automaticamente o próximo chamado disponível da fila (`aberto` e sem atendente, o mais antigo primeiro) a ele, muda o status para em atendimento e exibe os dados do chamado assumido. Se não houver chamados na fila, informa isso.
+- **2 - Verificar histórico:** lista os chamados já resolvidos por esse atendente, com opção de ver os detalhes.
+- **3 - Meus chamados:** lista os atendimentos do atendente logado em um menu numerado. Ao escolher um chamado, ele pode **visualizar os detalhes** ou **movimentá-lo para resolvido** (registrando o fechamento).
+## O que o documento deve conter
+1. **Diagnóstico do estado atual:** o que já existe no projeto (módulos, telas, serviços, banco), o que está funcionando, o que está parcial e o que não foi iniciado, comparado com as funcionalidades acima.
+2. **Visão geral e regras de negócio** (validações de email, telefone e senha, ciclo de vida do status do chamado, regras de cancelamento e de atribuição).
+3. **Contratos entre componentes descritos em texto** (quais funções, entradas e saídas, quais módulos conversam entre si), para que cada pessoa trabalhe sem esperar as demais. Sem código.
+4. **Divisão de tasks para 4 pessoas**, pensada para trabalho **assíncrono** e com **mínima dependência**:
+   - escreva **várias tasks detalhadas, baseadas no que já existe no sistema**, cobrindo tudo o que falta até a **conclusão do projeto** (funcionalidades faltantes, correções, refatorações necessárias, validações, tratamento de erros, testes, documentação e integração final);
+   - cada pessoa é dona de arquivos/módulos distintos, para evitar conflito de merge;
+   - cada task deve ter: objetivo, arquivos ou módulos envolvidos, dependências (se houver) e critério de "pronto";
+   - explique como cada pessoa trabalha de forma independente (ex.: usando dados simulados ou um banco local) e quais poucas entregas iniciais destravam os outros.
+5. **Marcos de integração**, ordem sugerida de execução, convenções de Git, critérios de aceite do projeto e **decisões em aberto**.
+
+## Formato e idioma
+- Português do Brasil.
+- Markdown organizado com títulos, tabelas e listas, mas **sem blocos de código**.
+
+### Uso da resposta / resultado
+
+Foi criado `docs/planejamento_projeto.md` com diagnóstico estático do repositório e conferência do edital, regras, contratos textuais, propriedade exclusiva de arquivos, tarefas para quatro integrantes, marcos, critérios de aceite e decisões em aberto. Não foi implementado código durante a elaboração desse documento. O texto mantém identificadas as limitações de validação e as divergências com o edital. O grupo deve revisar as decisões e atribuir os nomes reais antes de executar o plano.

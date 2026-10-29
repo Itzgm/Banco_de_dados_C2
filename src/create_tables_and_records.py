@@ -1,54 +1,53 @@
-from conexion.oracle_queries import OracleQueries
+from pathlib import Path
 
-def create_tables(query:str):
-    list_of_commands = query.split(";")
+from conexion.postgres_queries import PostgresConnection
 
-    oracle = OracleQueries(can_write=True)
-    oracle.connect()
 
-    for command in list_of_commands:    
-        if len(command) > 0:
-            print(command)
-            try:
-                oracle.executeDDL(command)
-                print("Successfully executed")
-            except Exception as e:
-                print(e)            
+SQL_DIRECTORY = Path(__file__).resolve().parents[1] / "sql"
 
-def generate_records(query:str, sep:str=';'):
-    list_of_commands = query.split(sep)
 
-    oracle = OracleQueries(can_write=True)
-    oracle.connect()
+def create_tables(query: str):
+    postgres = PostgresConnection(can_write=True)
+    try:
+        postgres.connect()
+        for command in query.split(";"):
+            if command.strip():
+                postgres.executeDDL(command)
+    finally:
+        postgres.close()
 
-    for command in list_of_commands:    
-        if len(command) > 0:
-            print(command)
-            oracle.write(command)
-            print("Successfully executed")
+
+def generate_records(query: str, sep: str = ";"):
+    if not query.strip():
+        return
+    postgres = PostgresConnection(can_write=True)
+    try:
+        postgres.connect()
+        for command in query.split(sep):
+            if command.strip():
+                postgres.write(command)
+    finally:
+        postgres.close()
+
 
 def run():
+    query_create = (SQL_DIRECTORY / "create_tables_atendimento.sql").read_text(
+        encoding="utf-8"
+    )
+    print("Criando tabelas...")
+    create_tables(query_create)
+    print("Tabelas criadas com sucesso!")
 
-    with open("../sql/create_tables_pedidos.sql") as f:
-        query_create = f.read()
+    query_records = (SQL_DIRECTORY / "inserting_samples_atendimento.sql").read_text(
+        encoding="utf-8"
+    )
+    if query_records.strip():
+        print("Inserindo registros de exemplo...")
+        generate_records(query_records)
+        print("Registros inseridos com sucesso!")
+    else:
+        print("Nenhum registro de exemplo definido para atendimento.")
 
-    print("Creating tables...")
-    create_tables(query=query_create)
-    print("Tables successfully created!")
 
-    with open("../sql/inserting_samples_records.sql") as f:
-        query_generate_records = f.read()
-
-    print("Gerenating records")
-    generate_records(query=query_generate_records)
-    print("Records successfully generated!")
-
-    with open("../sql/inserting_samples_related_records.sql") as f:
-        query_generate_related_records = f.read()
-
-    print("Gerenating records")
-    generate_records(query=query_generate_related_records, sep='--')
-    print("Records successfully generated!")
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     run()
