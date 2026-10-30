@@ -18,7 +18,11 @@ def exibir_acao(opcao):
 def run():
     while True:
         print(MENU_PRINCIPAL)
-        opcao = int(input("Escolha uma opção [0-3]: "))
+        try:
+            opcao = int(input("Escolha uma opção [0-3]: "))
+        except ValueError:
+            print("Opção inválida. Tente novamente.")
+            continue
 
         if opcao == 0:
             print("Obrigado por utilizar o sistema. Até logo!")
