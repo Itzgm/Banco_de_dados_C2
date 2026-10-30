@@ -1,37 +1,27 @@
-MENU_PRINCIPAL = """Menu Principal
-1 - Abrir chamado
-2 - Consultar chamados
-3 - Login do atendente
-0 - Sair
-"""
+import argparse
+
+from cli.aplicacao import Aplicacao
+from cli.provedor import ProvedorControladoras
 
 
-def exibir_acao(opcao):
-    mensagens = {
-        1: "A abertura de chamados ainda não está disponível.",
-        2: "A consulta de chamados ainda não está disponível.",
-        3: "O login do atendente ainda não está disponível.",
-    }
-    print(mensagens[opcao])
+def run(provedor=None, entrada=None, manutencao=False):
+    Aplicacao(provedor or ProvedorControladoras(), entrada).iniciar(manutencao)
 
 
-def run():
-    while True:
-        print(MENU_PRINCIPAL)
-        try:
-            opcao = int(input("Escolha uma opção [0-3]: "))
-        except ValueError:
-            print("Opção inválida. Tente novamente.")
-            continue
+def main():
+    parser = argparse.ArgumentParser(description="Sistema de chamados de suporte")
+    parser.add_argument("--demo", action="store_true", help="Usa dados temporários, sem PostgreSQL")
+    parser.add_argument("--manutencao", action="store_true", help="Abre a manutenção local de entidades")
+    argumentos = parser.parse_args()
+    provedor = None
+    if argumentos.demo:
+        from cli.demonstracao import ProvedorDemonstracao
 
-        if opcao == 0:
-            print("Obrigado por utilizar o sistema. Até logo!")
-            break
-        if opcao in (1, 2, 3):
-            exibir_acao(opcao)
-        else:
-            print("Opção inválida. Tente novamente.")
+        print("DEMONSTRAÇÃO: dados temporários, apagados ao sair.")
+        print("Login de exemplo: atendente@exemplo.com | senha: demonstracao")
+        provedor = ProvedorDemonstracao()
+    run(provedor, manutencao=argumentos.manutencao)
 
 
 if __name__ == "__main__":
-    run()
+    main()
