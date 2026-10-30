@@ -103,6 +103,9 @@ celerybeat.pid
 
 # Environments
 .env
+.env.docker
+.env.postgres-test
+.postgres-test/
 .venv
 env/
 venv/
@@ -127,3 +130,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Documentacao tecnica mantida somente nesta maquina
+/base_integrada/docs/documentacao_tecnica_avancada.md
+
+# Copias locais; o codigo integrado e versionado na raiz
+/base_integrada/
+/base_exemplo/

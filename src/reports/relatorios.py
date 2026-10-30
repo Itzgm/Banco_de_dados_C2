@@ -1,75 +1,96 @@
-from conexion.oracle_queries import OracleQueries
+from pathlib import Path
+from conexion.postgres_queries import PostgresQueries
+
 
 class Relatorio:
     def __init__(self):
-        # Abre o arquivo com a consulta e associa a um atributo da classe
-        with open("sql/relatorio_pedidos.sql") as f:
-            self.query_relatorio_pedidos = f.read()
+        diretorio_sql = Path(__file__).resolve().parents[1] / "sql"
+        try:
+            self.query_relatorio_clientes = (diretorio_sql / "relatorio_clientes.sql").read_text(encoding="utf-8")
+            self.query_relatorio_atendentes = (diretorio_sql / "relatorio_atendentes.sql").read_text(encoding="utf-8")
+            self.query_relatorio_atendimentos_detalhados = (diretorio_sql / "relatorio_atendimentos_detalhados.sql").read_text(encoding="utf-8")
+            self.query_relatorio_tempo_medio_por_atendente = (diretorio_sql / "relatorio_tempo_medio_por_atendente.sql").read_text(encoding="utf-8")
+        except (OSError, UnicodeError) as erro:
+            raise ConnectionError("Arquivo de relatório indisponível. Confira a instalação.") from erro
 
-        # Abre o arquivo com a consulta e associa a um atributo da classe
-        with open("sql/relatorio_pedidos_por_fornecedor.sql") as f:
-            self.query_relatorio_pedidos_por_fornecedor = f.read()
+    def get_relatorio_clientes(self, exibir: bool = True):
+        postgres = PostgresQueries()
+        try:
+            postgres.connect()
+            df_relatorio = postgres.sqlToDataFrame(self.query_relatorio_clientes)
+        finally:
+            postgres.close()
+        if exibir:
+            print("Clientes")
+            if df_relatorio.empty:
+                print("Nenhum registro encontrado.")
+            else:
+                exibicao = df_relatorio.astype(object).where(df_relatorio.notna(), "Não disponível")
+                print(exibicao.to_string(index=False))
+            input("Pressione Enter para sair do relatório: ")
+        return df_relatorio
 
-        # Abre o arquivo com a consulta e associa a um atributo da classe
-        with open("sql/relatorio_produtos.sql") as f:
-            self.query_relatorio_produtos = f.read()
+    def get_relatorio_atendentes(self, exibir: bool = True):
+        postgres = PostgresQueries()
+        try:
+            postgres.connect()
+            df_relatorio = postgres.sqlToDataFrame(self.query_relatorio_atendentes)
+        finally:
+            postgres.close()
+        if exibir:
+            print("Atendentes")
+            if df_relatorio.empty:
+                print("Nenhum registro encontrado.")
+            else:
+                exibicao = df_relatorio.astype(object).where(df_relatorio.notna(), "Não disponível")
+                print(exibicao.to_string(index=False))
+            input("Pressione Enter para sair do relatório: ")
+        return df_relatorio
 
-        # Abre o arquivo com a consulta e associa a um atributo da classe
-        with open("sql/relatorio_clientes.sql") as f:
-            self.query_relatorio_clientes = f.read()
+    def get_relatorio_atendimentos_detalhados(self, exibir: bool = True):
+        postgres = PostgresQueries()
+        try:
+            postgres.connect()
+            df_relatorio = postgres.sqlToDataFrame(self.query_relatorio_atendimentos_detalhados)
+        finally:
+            postgres.close()
+        if exibir:
+            print("Detalhes dos chamados")
+            if df_relatorio.empty:
+                print("Nenhum registro encontrado.")
+            else:
+                exibicao = df_relatorio.astype(object).where(df_relatorio.notna(), "Não disponível")
+                print(exibicao.to_string(index=False))
+            input("Pressione Enter para sair do relatório: ")
+        return df_relatorio
 
-        # Abre o arquivo com a consulta e associa a um atributo da classe
-        with open("sql/relatorio_fornecedores.sql") as f:
-            self.query_relatorio_fornecedores = f.read()
+    def get_relatorio_tempo_medio_por_atendente(self, exibir: bool = True):
+        postgres = PostgresQueries()
+        try:
+            postgres.connect()
+            df_relatorio = postgres.sqlToDataFrame(self.query_relatorio_tempo_medio_por_atendente)
+        finally:
+            postgres.close()
+        if exibir:
+            print("Tempo médio por atendente")
+            print("Média em segundos entre abertura e fechamento; sem amostra = não disponível.")
+            if df_relatorio.empty:
+                print("Nenhum registro encontrado.")
+            else:
+                exibicao = df_relatorio.astype(object).where(df_relatorio.notna(), "Não disponível")
+                print(exibicao.to_string(index=False))
+            input("Pressione Enter para sair do relatório: ")
+        return df_relatorio
 
-        # Abre o arquivo com a consulta e associa a um atributo da classe
-        with open("sql/relatorio_itens_pedidos.sql") as f:
-            self.query_relatorio_itens_pedidos = f.read()
-
-    def get_relatorio_pedidos(self):
-        # Cria uma nova conexão com o banco que permite alteração
-        oracle = OracleQueries()
-        oracle.connect()
-        # Recupera os dados transformando em um DataFrame
-        print(oracle.sqlToDataFrame(self.query_relatorio_pedidos))
-        input("Pressione Enter para Sair do Relatório de Pedidos")
-
-    def get_relatorio_pedidos_por_fornecedor(self):
-        # Cria uma nova conexão com o banco que permite alteração
-        oracle = OracleQueries()
-        oracle.connect()
-        # Recupera os dados transformando em um DataFrame
-        print(oracle.sqlToDataFrame(self.query_relatorio_pedidos_por_fornecedor))
-        input("Pressione Enter para Sair do Relatório de Fornecedores")
-
-    def get_relatorio_produtos(self):
-        # Cria uma nova conexão com o banco que permite alteração
-        oracle = OracleQueries()
-        oracle.connect()
-        # Recupera os dados transformando em um DataFrame
-        print(oracle.sqlToDataFrame(self.query_relatorio_produtos))
-        input("Pressione Enter para Sair do Relatório de Produtos")
-
-    def get_relatorio_clientes(self):
-        # Cria uma nova conexão com o banco que permite alteração
-        oracle = OracleQueries()
-        oracle.connect()
-        # Recupera os dados transformando em um DataFrame
-        print(oracle.sqlToDataFrame(self.query_relatorio_clientes))
-        input("Pressione Enter para Sair do Relatório de Clientes")
-
-    def get_relatorio_fornecedores(self):
-        # Cria uma nova conexão com o banco que permite alteração
-        oracle = OracleQueries()
-        oracle.connect()
-        # Recupera os dados transformando em um DataFrame
-        print(oracle.sqlToDataFrame(self.query_relatorio_fornecedores))
-        input("Pressione Enter para Sair do Relatório de Fornecedores")
-
-    def get_relatorio_itens_pedidos(self):
-        # Cria uma nova conexão com o banco que permite alteração
-        oracle = OracleQueries()
-        oracle.connect()
-        # Recupera os dados transformando em um DataFrame
-        print(oracle.sqlToDataFrame(self.query_relatorio_itens_pedidos))
-        input("Pressione Enter para Sair do Relatório de Itens de Pedidos")
+    def get_totais(self) -> dict:
+        postgres = PostgresQueries()
+        try:
+            postgres.connect()
+            totais = {}
+            for tabela in ("clientes", "atendentes", "chamados"):
+                query = f"select count(1) as total from {tabela}"
+                df_total = postgres.sqlToDataFrame(query)
+                totais[tabela] = int(df_total.iloc[0]["total"])
+            return totais
+        finally:
+            postgres.close()

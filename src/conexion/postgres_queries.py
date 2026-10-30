@@ -1,4 +1,5 @@
 import json
+from contextlib import contextmanager
 import os
 from pathlib import Path
 
@@ -7,14 +8,18 @@ from dotenv import load_dotenv
 from pandas import DataFrame
 
 
-class PostgresConnection:
+class PostgresQueries:
     def __init__(self, can_write: bool = False):
         self.cur = None
         self.conn = None
+        self._in_transaction = False
         load_dotenv(Path(__file__).resolve().parents[2] / ".env", override=False)
         self.can_write = can_write
         self.host = os.getenv("DB_HOST", "localhost")
-        self.port = int(os.getenv("DB_PORT", "5432"))
+        try:
+            self.port = int(os.getenv("DB_PORT", "5432"))
+        except ValueError as erro:
+            raise ConnectionError("A porta PostgreSQL configurada é inválida.") from erro
         self.password = os.getenv("DB_PASSWORD")
         self.user = os.getenv("DB_USER", "postgres")
         self.dbname = os.getenv("DB_NAME", "postgres")
@@ -23,19 +28,10 @@ class PostgresConnection:
         try:
             self.close()
         except Exception:
-            # Destrutores também podem rodar durante a finalização do Python.
             pass
 
     def connect(self):
-        '''
-        Esse método realiza a conexão com o banco de dados Oracle
-        Parameters:
-        - user: nome do usuário criado para utilização do banco de dados
-        - password: senha do usuário criado para utilização do banco de dados
-        - dsn: string de conexão para acessar o banco de dados oracle
-        - enconding: codificação de caracteres para não haver erros com caracteres em português
-        return: um cursor que permite utilizar as funções da biblioteca cx_Oracle
-        '''
+        
         if (
             self.conn is not None and not self.conn.closed
             and self.cur is not None and not self.cur.closed
@@ -43,19 +39,22 @@ class PostgresConnection:
             return self.cur
 
         self.close()
-        self.conn = psycopg2.connect(
-            dbname=self.dbname,
-            user=self.user,
-            password=self.password,
-            host=self.host,
-            port=self.port,
-            connect_timeout=10,
-        )
+        try:
+            self.conn = psycopg2.connect(
+                dbname=self.dbname,
+                user=self.user,
+                password=self.password,
+                host=self.host,
+                port=self.port,
+                connect_timeout=10,
+            )
+        except psycopg2.Error as erro:
+            self._informar_erro(erro)
         try:
             self.cur = self.conn.cursor()
-        except psycopg2.Error:
+        except psycopg2.Error as erro:
             self.close()
-            raise
+            self._informar_erro(erro)
         return self.cur
 
     def _execute(self, query: str, params=None, commit: bool = False):
@@ -66,30 +65,43 @@ class PostgresConnection:
             raise RuntimeError("Conecte ao PostgreSQL com connect() antes de executar SQL.")
         try:
             self.cur.execute(query, params)
-            if commit:
+            if commit and not self._in_transaction:
                 self.conn.commit()
-        except psycopg2.Error:
+        except psycopg2.Error as erro:
+            if not self._in_transaction:
+                self.conn.rollback()
+            self._informar_erro(erro)
+
+    @contextmanager
+    def transaction(self):
+        
+        if not self.can_write:
+            raise PermissionError("Esta conexão não permite alterações.")
+        if self.conn is None or self.conn.closed or self.cur is None or self.cur.closed:
+            raise RuntimeError("Conecte ao PostgreSQL antes de iniciar a transação.")
+        if self._in_transaction:
+            raise RuntimeError("Transações aninhadas não são suportadas.")
+        self._in_transaction = True
+        try:
+            yield self
+            self.conn.commit()
+        except psycopg2.Error as erro:
+            self.conn.rollback()
+            self._informar_erro(erro)
+        except BaseException:
             self.conn.rollback()
             raise
+        finally:
+            self._in_transaction = False
 
     def sqlToDataFrame(self, query: str, params=None) -> DataFrame:
-        '''
-        Esse método irá executar uma query
-        Parameters:
-        - query: consulta utilizada para recuperação dos dados
-        return: um DataFrame da biblioteca Pandas
-        '''
+        
         self._execute(query, params)
         rows = self.cur.fetchall()
         return DataFrame(rows, columns=[col[0].lower() for col in self.cur.description])
 
     def sqlToMatrix(self, query: str, params=None) -> tuple:
-        '''
-        Esse método irá executar uma query
-        Parameters:
-        - query: consulta utilizada para recuperação dos dados
-        return: uma matriz (lista de listas), uma lista com os nomes das colunas(atributos) da(s) tabela(s)
-        '''        
+        
         self._execute(query, params)
         rows = self.cur.fetchall()
         matrix = [list(row) for row in rows]
@@ -97,22 +109,18 @@ class PostgresConnection:
         return matrix, columns
 
     def sqlToJson(self, query: str, params=None) -> str:
-        '''
-        Esse método irá executar uma query
-        Parameters:
-        - query: consulta utilizada para recuperação dos dados
-        return: um objeto json
-        '''
+        
         self._execute(query, params)
         columns = [col[0].lower() for col in self.cur.description]
         rows = [dict(zip(columns, row)) for row in self.cur.fetchall()]
         return json.dumps(rows, default=str, ensure_ascii=False)
 
     def write(self, query: str, params=None):
-        """Executa e confirma uma alteração; desfaz a transação em caso de erro."""
+        
         if not self.can_write:
             raise PermissionError("Esta conexão não permite alterações; use can_write=True.")
         self._execute(query, params, commit=True)
+        return self.cur.rowcount
 
     def close(self):
         try:
@@ -127,9 +135,12 @@ class PostgresConnection:
                 self.conn = None
 
     def executeDDL(self, query: str, params=None):
-        '''
-        Esse método irá executar o comando DDL enviado no atributo query
-        Parameters:
-        - query: consulta utilizada para comandos DDL
-        '''
+        
         self.write(query, params)
+
+    def _informar_erro(self, erro):
+        if isinstance(erro, psycopg2.errors.UniqueViolation):
+            raise RuntimeError("Já existe um registro com esse email.") from erro
+        if isinstance(erro, psycopg2.errors.ForeignKeyViolation):
+            raise ValueError("Existem registros relacionados ou uma referência inexistente.") from erro
+        raise ConnectionError("Não foi possível concluir a operação no PostgreSQL. Confira a configuração e o serviço.") from erro

@@ -1,147 +1,304 @@
+import argparse
+from pathlib import Path
+from dotenv import load_dotenv
 from utils import config
 from utils.splash_screen import SplashScreen
 from reports.relatorios import Relatorio
-from controller.controller_produto import Controller_Produto
 from controller.controller_cliente import Controller_Cliente
-from controller.controller_fornecedor import Controller_Fornecedor
-from controller.controller_pedido import Controller_Pedido
-from controller.controller_item_pedido import Controller_Item_Pedido
+from controller.controller_atendente import Controller_Atendente
+from controller.controller_atendimento import Controller_Atendimento
+
 
 tela_inicial = SplashScreen()
-relatorio = Relatorio()
-ctrl_produto = Controller_Produto()
 ctrl_cliente = Controller_Cliente()
-ctrl_fornecedor = Controller_Fornecedor()
-ctrl_pedido = Controller_Pedido()
-ctrl_item_pedido = Controller_Item_Pedido()
+ctrl_atendente = Controller_Atendente()
+ctrl_chamado = Controller_Atendimento()
 
-def reports(opcao_relatorio:int=0):
 
+def reports(opcao_relatorio: int = 0):
+    relatorio = Relatorio()
     if opcao_relatorio == 1:
-        relatorio.get_relatorio_pedidos_por_fornecedor()            
+        return relatorio.get_relatorio_tempo_medio_por_atendente()
     elif opcao_relatorio == 2:
-        relatorio.get_relatorio_pedidos()
+        return relatorio.get_relatorio_atendimentos_detalhados()
     elif opcao_relatorio == 3:
-        relatorio.get_relatorio_produtos()
+        return relatorio.get_relatorio_clientes()
     elif opcao_relatorio == 4:
-        relatorio.get_relatorio_clientes()
-    elif opcao_relatorio == 5:
-        relatorio.get_relatorio_fornecedores()
-    elif opcao_relatorio == 6:
-        relatorio.get_relatorio_itens_pedidos()
+        return relatorio.get_relatorio_atendentes()
 
-def inserir(opcao_inserir:int=0):
 
-    if opcao_inserir == 1:                               
-        novo_produto = ctrl_produto.inserir_produto()
+def inserir(opcao_inserir: int = 0, operador=None):
+    ctrl_atendente.exigir_manutencao(operador)
+    if opcao_inserir == 1:
+        return ctrl_cliente.inserir_cliente(operador=operador)
     elif opcao_inserir == 2:
-        novo_cliente = ctrl_cliente.inserir_cliente()
+        return ctrl_atendente.inserir_atendente(operador=operador)
     elif opcao_inserir == 3:
-        novo_fornecedor = ctrl_fornecedor.inserir_fornecedor()
-    elif opcao_inserir == 4:
-        novo_pedido = ctrl_pedido.inserir_pedido()
-    elif opcao_inserir == 5:
-        novo_item_pedido = ctrl_item_pedido.inserir_item_pedido()
+        return ctrl_chamado.inserir_chamado(operador)
 
-def atualizar(opcao_atualizar:int=0):
 
+def atualizar(opcao_atualizar: int = 0, operador=None):
+    ctrl_atendente.exigir_manutencao(operador)
     if opcao_atualizar == 1:
-        relatorio.get_relatorio_produtos()
-        produto_atualizado = ctrl_produto.atualizar_produto()
+        return ctrl_cliente.atualizar_cliente(operador=operador)
     elif opcao_atualizar == 2:
-        relatorio.get_relatorio_clientes()
-        cliente_atualizado = ctrl_cliente.atualizar_cliente()
+        return ctrl_atendente.atualizar_atendente(operador=operador)
     elif opcao_atualizar == 3:
-        relatorio.get_relatorio_fornecedores()
-        fornecedor_atualizado = ctrl_fornecedor.atualizar_fornecedor()
-    elif opcao_atualizar == 4:
-        relatorio.get_relatorio_pedidos()
-        pedido_atualizado = ctrl_pedido.atualizar_pedido()
-    elif opcao_atualizar == 5:
-        relatorio.get_relatorio_itens_pedidos()
-        item_pedido_atualizado = ctrl_item_pedido.atualizar_item_pedido()
+        return ctrl_chamado.atualizar_registro(operador)
 
-def excluir(opcao_excluir:int=0):
 
+def excluir(opcao_excluir: int = 0, operador=None):
+    ctrl_atendente.exigir_manutencao(operador)
     if opcao_excluir == 1:
-        relatorio.get_relatorio_produtos()
-        ctrl_produto.excluir_produto()
-    elif opcao_excluir == 2:                
-        relatorio.get_relatorio_clientes()
-        ctrl_cliente.excluir_cliente()
-    elif opcao_excluir == 3:                
-        relatorio.get_relatorio_fornecedores()
-        ctrl_fornecedor.excluir_fornecedor()
-    elif opcao_excluir == 4:                
-        relatorio.get_relatorio_pedidos()
-        ctrl_pedido.excluir_pedido()
-    elif opcao_excluir == 5:
-        relatorio.get_relatorio_itens_pedidos()
-        ctrl_item_pedido.excluir_item_pedido()
+        return ctrl_cliente.excluir_cliente(operador=operador)
+    elif opcao_excluir == 2:
+        return ctrl_atendente.excluir_atendente(operador=operador)
+    elif opcao_excluir == 3:
+        return ctrl_chamado.excluir_registro(operador)
+
+
+def relatorios_menu():
+    while True:
+        print(config.MENU_RELATORIOS)
+        opcao = input("Escolha: ").strip()
+        if opcao == "0":
+            return
+        if opcao not in ("1", "2", "3", "4"):
+            print("Opção inválida.")
+            continue
+        try:
+            reports(int(opcao))
+        except (ValueError, LookupError, RuntimeError, PermissionError, ConnectionError) as erro:
+            print(erro)
+
+
+def manutencao(operador):
+    ctrl_atendente.exigir_manutencao(operador)
+    while True:
+        ctrl_atendente.exigir_manutencao(operador)
+        print(config.MENU_ENTIDADES)
+        entidade = input("Entidade: ").strip()
+        if entidade == "0":
+            return
+        if entidade not in ("1", "2", "3"):
+            print("Opção inválida.")
+            continue
+        print(config.MENU_OPERACOES)
+        operacao = input("Escolha: ").strip()
+        if operacao == "0":
+            continue
+        if operacao not in ("1", "2", "3"):
+            print("Opção inválida.")
+            continue
+        try:
+            while True:
+                if operacao == "1":
+                    inserir(int(entidade), operador)
+                elif operacao == "2":
+                    atualizar(int(entidade), operador)
+                elif operacao == "3":
+                    excluir(int(entidade), operador)
+                try:
+                    ctrl_atendente.buscar_por_id(operador.get_id_atendente())
+                except LookupError:
+                    return
+                if not config.confirmar("Realizar outra operação do mesmo tipo?"):
+                    break
+        except config.Voltar:
+            pass
+        except (ValueError, LookupError, RuntimeError, PermissionError, ConnectionError) as erro:
+            print(erro)
+
+
+def login():
+    atendente = ctrl_atendente.autenticar()
+    if atendente is None:
+        print("Email ou senha inválidos.")
+        return
+    print("Bem-vindo(a),", atendente.get_nome())
+    while True:
+        try:
+            atendente = ctrl_atendente.buscar_por_id(atendente.get_id_atendente())
+        except LookupError:
+            print("A conta não existe mais. Sessão encerrada.")
+            return
+        print(config.MENU_ATENDENTE)
+        opcao = input("Escolha: ").strip()
+        if opcao == "0":
+            return
+        try:
+            if opcao == "1":
+                chamado = ctrl_chamado.assumir_proximo_chamado(atendente.get_id_atendente())
+                if chamado is None:
+                    print("Nenhum chamado disponível na fila.")
+                else:
+                    print("Chamado assumido:", chamado.to_string())
+            elif opcao == "2":
+                listar_atendente(atendente.get_id_atendente(), historico=True)
+            elif opcao == "3":
+                listar_atendente(atendente.get_id_atendente())
+            elif opcao == "4":
+                relatorios_menu()
+            elif opcao == "5":
+                manutencao(atendente)
+            else:
+                print("Opção inválida.")
+        except config.Voltar:
+            pass
+        except (ValueError, LookupError, RuntimeError, PermissionError, ConnectionError) as erro:
+            print(erro)
+
+
+def campo(registro, nome, padrao=None):
+    if isinstance(registro, dict):
+        return registro.get(nome, padrao)
+    getter = getattr(registro, f'get_{nome}', None)
+    return getter() if callable(getter) else getattr(registro, nome, padrao)
+
+def proteger(acao):
+    try:
+        acao()
+    except config.Voltar:
+        print("Retornando ao menu anterior.")
+    except (ValueError, LookupError, RuntimeError, PermissionError, ConnectionError) as erro:
+        print(erro)
+
+def identificar_cliente():
+    while True:
+        email = config.campo('Email do cliente', ctrl_cliente.validar_email)
+        cliente = ctrl_cliente.buscar_por_email(email)
+        if cliente is not None:
+            return cliente
+        print('Cliente não encontrado. Preencha o cadastro.')
+        try:
+            nome = config.campo('Nome')
+            telefone = config.campo('Telefone', ctrl_cliente.validar_telefone)
+            print(f'Nome: {nome} | Email: {email} | Telefone: {telefone}')
+            if not config.confirmar_opcao('Confirmar cadastro?'):
+                continue
+            return ctrl_cliente.inserir_cliente(nome, email, telefone)
+        except config.Voltar:
+            print('Informe novamente o email para buscar o cliente.')
+
+def abrir_chamado():
+    while True:
+        cliente = identificar_cliente()
+        titulo = config.campo('Título')
+        descricao = config.campo('Descrição')
+        if config.confirmar_opcao('Confirmar abertura do chamado?'):
+            chamado = ctrl_chamado.criar_chamado(campo(cliente, 'id_cliente'), titulo, descricao)
+            print(f'Chamado criado: {resumo(chamado)}')
+        if not config.confirmar_opcao('Abrir outro chamado?'):
+            return
+
+def resumo(chamado):
+    return f"#{campo(chamado, 'id_chamado')} - {campo(chamado, 'nome')} ({campo(chamado, 'status')})"
+
+def detalhes(chamado):
+    responsavel = campo(chamado, 'atendente')
+    if responsavel is None:
+        responsavel = 'Ainda não atribuído'
+    else:
+        responsavel = campo(responsavel, 'nome')
+    print(resumo(chamado))
+    print(f"Descrição: {campo(chamado, 'descricao')}")
+    print(f"Cliente: {campo(chamado, 'id_cliente')}")
+    print(f'Responsável: {responsavel}')
+    print(f"Abertura: {campo(chamado, 'data_abertura')}")
+    print(f"Fechamento: {campo(chamado, 'data_fechamento') or 'Não encerrado'}")
+
+def consultar():
+    email = config.campo('Email do cliente', ctrl_cliente.validar_email)
+    cliente = ctrl_cliente.buscar_por_email(email)
+    if cliente is None:
+        print('Cliente não encontrado.')
+        return
+    id_cliente = campo(cliente, 'id_cliente')
+    while True:
+        todos = ctrl_chamado.listar_chamados_cliente(id_cliente, apenas_ativos=False)
+        if not todos:
+            print('Este cliente não possui chamados.')
+            return
+        abertos = [c for c in todos if campo(c, 'status') == 'aberto']
+        if not abertos:
+            print('Este cliente não possui chamados em aberto para esta listagem.')
+            return
+        escolhido = config.selecionar_registro(abertos, resumo)
+        if escolhido is None:
+            return
+        try:
+            chamado = ctrl_chamado.consultar_detalhes(campo(escolhido, 'id_chamado'))
+            if campo(chamado, 'id_cliente') != id_cliente:
+                raise RuntimeError('Chamado indisponível para este cliente.')
+            detalhes(chamado)
+            opcao = config.opcao('1 - Cancelar chamado\n2 - Voltar', (1, 2))
+            if opcao == 1 and config.confirmar_opcao('Excluir definitivamente o chamado?'):
+                removido = ctrl_chamado.cancelar_chamado(campo(chamado, 'id_chamado'), id_cliente)
+                print('Chamado cancelado.' if removido else 'Chamado alterado; lista atualizada.')
+        except RuntimeError as erro:
+            print(f'{erro} Atualizando a lista.')
+
+def assumir(id_atendente):
+    chamado = ctrl_chamado.assumir_proximo_chamado(id_atendente)
+    if chamado is None:
+        print('Nenhum chamado disponível na fila.')
+    else:
+        print('Chamado atribuído.')
+        detalhes(chamado)
+
+def listar_atendente(id_atendente, historico=False):
+    while True:
+        chamados = ctrl_chamado.listar_historico_atendente(id_atendente) if historico else ctrl_chamado.listar_meus_chamados(id_atendente)
+        escolhido = config.selecionar_registro(chamados, resumo)
+        if escolhido is None:
+            return
+        chamado = ctrl_chamado.consultar_detalhes(campo(escolhido, 'id_chamado'))
+        if campo(chamado, 'id_atendente') != id_atendente:
+            raise RuntimeError('Chamado indisponível para este atendente.')
+        detalhes(chamado)
+        if not historico and campo(chamado, 'status') == 'em andamento':
+            if config.confirmar_opcao('Resolver este chamado?'):
+                resultado = ctrl_chamado.resolver_chamado(campo(chamado, 'id_chamado'), id_atendente)
+                print('Chamado resolvido.')
+                detalhes(resultado)
+
 
 def run():
-    print(tela_inicial.get_updated_screen())
-    config.clear_console()
-
+    try:
+        print(tela_inicial.get_updated_screen())
+    except (ValueError, LookupError, RuntimeError, PermissionError, ConnectionError) as erro:
+        print(erro)
+        return
     while True:
         print(config.MENU_PRINCIPAL)
-        opcao = int(input("Escolha uma opção [1-5]: "))
-        config.clear_console(1)
-        
-        if opcao == 1: # Relatórios
-            
-            print(config.MENU_RELATORIOS)
-            opcao_relatorio = int(input("Escolha uma opção [0-6]: "))
-            config.clear_console(1)
+        opcao = input("Escolha: ").strip()
+        if opcao == "0":
+            print("Até logo!")
+            return
+        try:
+            if opcao == "1":
+                abrir_chamado()
+            elif opcao == "2":
+                consultar()
+            elif opcao == "3":
+                login()
+            else:
+                print("Opção inválida.")
+        except config.Voltar:
+            pass
+        except (ValueError, LookupError, RuntimeError, PermissionError, ConnectionError) as erro:
+            print(erro)
 
-            reports(opcao_relatorio)
-
-            config.clear_console(1)
-
-        elif opcao == 2: # Inserir Novos Registros
-            
-            print(config.MENU_ENTIDADES)
-            opcao_inserir = int(input("Escolha uma opção [1-5]: "))
-            config.clear_console(1)
-
-            inserir(opcao_inserir=opcao_inserir)
-
-            config.clear_console()
-            print(tela_inicial.get_updated_screen())
-            config.clear_console()
-
-        elif opcao == 3: # Atualizar Registros
-
-            print(config.MENU_ENTIDADES)
-            opcao_atualizar = int(input("Escolha uma opção [1-5]: "))
-            config.clear_console(1)
-
-            atualizar(opcao_atualizar=opcao_atualizar)
-
-            config.clear_console()
-
-        elif opcao == 4:
-
-            print(config.MENU_ENTIDADES)
-            opcao_excluir = int(input("Escolha uma opção [1-5]: "))
-            config.clear_console(1)
-
-            excluir(opcao_excluir=opcao_excluir)
-
-            config.clear_console()
-            print(tela_inicial.get_updated_screen())
-            config.clear_console()
-
-        elif opcao == 5:
-
-            print(tela_inicial.get_updated_screen())
-            config.clear_console()
-            print("Obrigado por utilizar o nosso sistema.")
-            exit(0)
-
-        else:
-            print("Opção incorreta.")
-            exit(1)
 
 if __name__ == "__main__":
-    run()
+    parser = argparse.ArgumentParser(description="Sistema de atendimento ao cliente")
+    parser.add_argument("--env-file", type=Path, help="Arquivo local de configuração opcional")
+    argumentos = parser.parse_args()
+    if argumentos.env_file:
+        if not argumentos.env_file.is_file():
+            parser.error("Arquivo de configuração não encontrado.")
+        load_dotenv(argumentos.env_file, override=True)
+    try:
+        run()
+    except (EOFError, KeyboardInterrupt):
+        print("\nAplicação encerrada.")

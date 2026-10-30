@@ -1,4 +1,3 @@
-select c.cpf
-     , c.nome 
-  from clientes c
- order by c.nome
+select id_cliente, nome, email, telefone
+from clientes
+order by nome, id_cliente;
