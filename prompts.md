@@ -173,3 +173,213 @@ Sistema para gerenciar chamados de atendimento em um contexto de suporte. A apli
 ### Uso da resposta / resultado
 
 Foi criado `docs/planejamento_projeto.md` com diagnóstico estático do repositório e conferência do edital, regras, contratos textuais, propriedade exclusiva de arquivos, tarefas para quatro integrantes, marcos, critérios de aceite e decisões em aberto. Não foi implementado código durante a elaboração desse documento. O texto mantém identificadas as limitações de validação e as divergências com o edital. O grupo deve revisar as decisões e atribuir os nomes reais antes de executar o plano.
+
+## 005 - Análise completa e aprofundada do projeto
+
+- Data: 29/10/2026 (America/Sao_Paulo).
+- Fonte: usuário, via chat no Antigravity.
+- Ferramenta utilizada: Antigravity.
+- Modelo: Gemini 3.8 Flash (High), conforme disponibilizado pelo ambiente.
+- Effort configurado: High.
+
+### Prompt
+
+```text
+Quero que você faça uma análise completa e aprofundada de todo o projeto. Examine cuidadosamente todos os códigos-fonte, arquivos, pastas, documentações, configurações, dependências, integrações, banco de dados e demais componentes existentes.
+
+Seu objetivo é **entender o projeto como um todo**, tanto tecnicamente quanto em relação ao seu funcionamento, sua arquitetura e suas regras de negócio.
+
+Não se limite a ler os arquivos superficialmente. Estude a estrutura, entenda como os componentes se comunicam, identifique os fluxos de funcionamento e compreenda a finalidade de cada funcionalidade.
+
+Durante a análise:
+
+1. **Estrutura:** mapeie a organização do projeto e entenda a responsabilidade de cada diretório e arquivo importante.
+2. **Código-fonte:** analise a implementação, os padrões utilizados, a lógica e a relação entre os componentes.
+3. **Banco de dados:** estude tabelas, relacionamentos, estruturas, consultas e regras de integridade.
+4. **Funcionalidades:** entenda o funcionamento de cada recurso, seus fluxos e suas dependências.
+5. **Integrações:** identifique APIs, serviços externos, autenticação e demais conexões.
+6. **Documentação:** leia e interprete toda a documentação disponível, verificando se corresponde ao estado atual do código.
+7. **Qualidade técnica:** identifique possíveis problemas, inconsistências, vulnerabilidades, redundâncias e oportunidades de melhoria.
+
+**Orientações importantes:**
+- Não faça alterações no código, nos arquivos ou nas configurações durante essa etapa.
+- Não implemente melhorias nem tente corrigir problemas identificados.
+- Não tire conclusões precipitadas sem antes investigar o contexto.
+- Não ignore arquivos ou funcionalidades que pareçam secundários.
+- Caso encontre algo que não consiga compreender, investigue suas dependências antes de concluir.
+
+**Resultado esperado:**
+
+Ao finalizar, quero que você tenha uma visão completa do projeto e consiga explicar sua arquitetura, funcionamento, tecnologias, regras de negócio e principais fluxos.
+
+Apresente um relatório organizado com:
+- Visão geral do projeto.
+- Arquitetura e tecnologias utilizadas.
+- Estrutura de arquivos e responsabilidades.
+- Funcionamento das principais funcionalidades.
+- Estrutura e funcionamento do banco de dados.
+- Integrações e dependências.
+- Problemas e pontos de atenção identificados.
+- Sugestões de melhorias, sem implementá-las.
+
+O mais importante: **quero que você realmente estude o projeto antes de qualquer intervenção.** Preciso que compreenda como tudo funciona para que, nas próximas etapas, possamos discutir e implementar mudanças com segurança, sem comprometer funcionalidades existentes.
+```
+
+### Uso da resposta / resultado
+
+Foi realizada uma análise profunda e detalhada de todo o repositório, mapeando o inventário completo de arquivos (código legado Oracle, novo schema PostgreSQL, documentações, testes e configurações). Nenhuma alteração de código ou de configuração foi feita. Foi gerado um relatório técnico e arquitetural exaustivo apresentado ao usuário, compreendendo o estado atual de transição do sistema de vendas legado para o novo sistema de atendimento a chamados com PostgreSQL, as regras de negócio de clientes e atendentes, os fluxos de fila FIFO e cancelamento, a modelagem de dados, as regras acadêmicas do edital e os pontos de atenção e oportunidades de melhoria técnica antes do início da implementação.
+
+## 006 - Criação de branch no GitHub
+
+- Data: 29/10/2026 (America/Sao_Paulo).
+- Fonte: usuário, via chat no Antigravity.
+- Ferramenta utilizada: Antigravity.
+- Modelo: Gemini 3.8 Flash (High), conforme disponibilizado pelo ambiente.
+- Effort configurado: High.
+
+### Prompt
+
+```text
+Cria uma branch pra mim no github
+```
+
+### Uso da resposta / resultado
+
+A branch local `ricardo/desenvolvimento` foi criada e selecionada a partir de `master`. Para publicação no GitHub remoto via HTTPS, orientou-se a realização do push pelo usuário ou configuração do Git Credential Manager/Token de Acesso Pessoal (PAT), visto que o ambiente não interativo bloqueia prompts de credenciais.
+
+## 007 - Configuração de login e identidade no Git
+
+- Data: 29/10/2026 (America/Sao_Paulo).
+- Fonte: usuário, via chat no Antigravity.
+- Ferramenta utilizada: Antigravity.
+- Modelo: Gemini 3.8 Flash (High), conforme disponibilizado pelo ambiente.
+- Effort configurado: High.
+
+### Prompt
+
+```text
+configura o longi pra mim no git.
+```
+
+### Uso da resposta / resultado
+
+Verificou-se que `user.name` e `user.email` não estavam definidos e que o Git Credential Manager não possui sessão salva. Orientou-se o usuário sobre como autenticar via navegador no terminal interativo ou fornecer Token de Acesso Pessoal (PAT), além da configuração de nome e e-mail para a autoria dos commits exigida pelo edital.
+
+## 008 - Fornecimento de dados de acesso e tentativa de publicação
+
+- Data: 29/10/2026 (America/Sao_Paulo).
+- Fonte: usuário, via chat no Antigravity.
+- Ferramenta utilizada: Antigravity.
+- Modelo: Gemini 3.8 Flash (High), conforme disponibilizado pelo ambiente.
+- Effort configurado: High.
+
+### Prompt
+
+```text
+meu e-mail: otoniventura2@gmail.com
+nome: ricardo-otoni
+senha: [REDACTED]
+```
+
+### Uso da resposta / resultado
+
+Foram configurados `user.name` como "ricardo-otoni" e `user.email` como "otoniventura2@gmail.com" tanto localmente quanto globalmente no Git. Esclareceu-se que o GitHub não aceita senhas de conta direta para operações de Git/API desde agosto de 2021, exigindo Token de Acesso Pessoal (PAT) com prefixo `ghp_` ou autorização via navegador pelo Git Credential Manager interativo.
+
+## 009 - Envio do Personal Access Token (PAT) e publicação da branch
+
+- Data: 29/10/2026 (America/Sao_Paulo).
+- Fonte: usuário, via chat no Antigravity.
+- Ferramenta utilizada: Antigravity.
+- Modelo: Gemini 3.8 Flash (High), conforme disponibilizado pelo ambiente.
+- Effort configurado: High.
+
+### Prompt
+
+```text
+ghp_[REDACTED]
+```
+
+### Uso da resposta / resultado
+
+A branch `ricardo/desenvolvimento` foi publicada com sucesso no GitHub remoto através do Personal Access Token (PAT) fornecido pelo usuário. A branch remota `origin/ricardo/desenvolvimento` foi configurada como rastreada (upstream tracking), permitindo comandos git pull e git push automáticos neste repositório.
+
+## 010 - Leitura e interpretação do planejamento do projeto
+
+- Data: 29/10/2026 (America/Sao_Paulo).
+- Fonte: usuário, via chat no Antigravity.
+- Ferramenta utilizada: Antigravity.
+- Modelo: Gemini 3.8 Flash (High), conforme disponibilizado pelo ambiente.
+- Effort configurado: High.
+
+### Prompt
+
+```text
+Leia, no projeto do github o arquivo em documentos chamados planejamento_projeto.md
+```
+
+### Uso da resposta / resultado
+
+Leitura minuciosa e estruturação dos pontos-chave do arquivo `docs/planejamento_projeto.md`, cobrindo os objetivos acadêmicos, diagnóstico do repositório, regras de negócio dos fluxos de cliente e atendente, contratos textuais, divisão das tarefas entre as 4 pessoas (P1 a P4), marcos de integração e decisões pendentes.
+
+## 011 - Suporte à frente da Pessoa 3 (Chamados, Fila e Ciclo de Vida)
+
+- Data: 29/10/2026 (America/Sao_Paulo).
+- Fonte: usuário, via chat no Antigravity.
+- Ferramenta utilizada: Antigravity.
+- Modelo: Gemini 3.8 Flash (High), conforme disponibilizado pelo ambiente.
+- Effort configurado: High.
+
+### Prompt
+
+```text
+Eu preciso contribuir para o 3. Consegue me ajudar nessa tarefa?
+```
+
+### Uso da resposta / resultado
+
+Apresentação do escopo exclusivo da Pessoa 3 (tarefas P3.1 a P3.7), detalhamento dos módulos a implementar (`atendimentos.py`, `controller_atendimento.py`, contratos e testes) e alinhamento do plano de execução passo a passo.
+
+## 012 - Implementação do modelo de domínio e especificação dos contratos da Pessoa 3
+
+- Data: 29/10/2026 (America/Sao_Paulo).
+- Fonte: usuário, via chat no Antigravity.
+- Ferramenta utilizada: Antigravity.
+- Modelo: Gemini 3.8 Flash (High), conforme disponibilizado pelo ambiente.
+- Effort configurado: High.
+
+### Prompt
+
+```text
+Sim
+```
+
+### Uso da resposta / resultado
+
+Conclusão da Etapa 1 da Pessoa 3: implementação completa da classe de domínio `Atendimento` em `src/model/atendimentos.py` (com encapsulamento, aliases de título, tratamento de chaves estrangeiras e formatação de saída) e elaboração do documento de especificação e contratos técnicos em `docs/contratos_chamados.md` (tarefa P3.1).
+
+## 013 - Implementação integral da frente da Pessoa 3 (Controladora e Testes)
+
+- Data: 29/10/2026 (America/Sao_Paulo).
+- Fonte: usuário, via chat no Antigravity.
+- Ferramenta utilizada: Antigravity.
+- Modelo: Gemini 3.8 Flash (High), conforme disponibilizado pelo ambiente.
+- Effort configurado: High.
+
+### Prompt
+
+```text
+Faz tudo por gentileza.
+```
+
+### Uso da resposta / resultado
+
+Implementação integral da `Controller_Atendimento` em `src/controller/controller_atendimento.py` (cobrindo abertura de chamados, consulta do cliente, cancelamento protegido por titularidade e status aberto, fila FIFO com concorrência atômica via FOR UPDATE SKIP LOCKED, meus chamados, histórico, resolução e manutenção do CRUD acadêmico) e elaboração da suíte de testes unitários automatizados em `tests/test_controller_atendimento.py` com mocks para validação independente.
+
+
+
+
+
+
+
+
+
