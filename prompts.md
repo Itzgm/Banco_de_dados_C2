@@ -173,3 +173,19 @@ Sistema para gerenciar chamados de atendimento em um contexto de suporte. A apli
 ### Uso da resposta / resultado
 
 Foi criado `docs/planejamento_projeto.md` com diagnóstico estático do repositório e conferência do edital, regras, contratos textuais, propriedade exclusiva de arquivos, tarefas para quatro integrantes, marcos, critérios de aceite e decisões em aberto. Não foi implementado código durante a elaboração desse documento. O texto mantém identificadas as limitações de validação e as divergências com o edital. O grupo deve revisar as decisões e atribuir os nomes reais antes de executar o plano.
+
+## Trabalho de CLI — 29/10/2026
+
+Texto recebido: "[davi/desenvolvimento](https://github.com/Itzgm/Banco_de_dados_C2/tree/davi/desenvolvimento) coloca então tudo que é necessário e faça os commits nessa branch para que eu possa entregar minha parte 100%".
+
+Fonte/ferramenta: Codex desktop. Modelo informado pela sessão: gpt-6.1-sol.
+Effort: não informado pela sessão.
+
+Uso e resultado: implementação das telas atribuídas à Pessoa 4, com entrada
+validada, retorno, adaptador para controladoras, demonstração em memória,
+16 testes de CLI aprovados e documentação de integração e entrega. Commits
+locais na branch solicitada, com autoria configurada pelo usuário. O email
+fornecido foi usado na configuração local do Git. Não houve implementação
+ou alteração dos módulos de domínio dos demais integrantes. PostgreSQL real,
+VM, nomes restantes da equipe e vídeo continuam pendentes; o checklist não
+apresenta simulação como conclusão dessas etapas.
