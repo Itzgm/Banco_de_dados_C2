@@ -1,0 +1,26 @@
+erDiagram
+    CLIENTES ||--o{ CHAMADOS : abre
+    ATENDENTES o|--o{ CHAMADOS : assume
+    CLIENTES {
+        int id_cliente PK "identity"
+        text nome "obrigatorio"
+        text email UK "obrigatorio"
+        text telefone "obrigatorio"
+    }
+    ATENDENTES {
+        int id_atendente PK "identity"
+        text nome "obrigatorio"
+        text email UK "obrigatorio"
+        text telefone "obrigatorio"
+        text senha "obrigatorio"
+    }
+    CHAMADOS {
+        int id_chamado PK "identity"
+        int id_cliente FK "obrigatorio"
+        int id_atendente FK "opcional"
+        text nome "obrigatorio"
+        text descricao "obrigatorio"
+        timestamp data_abertura "padrao atual; aceita nulo"
+        timestamp data_fechamento "opcional"
+        text status "obrigatorio; padrao aberto"
+    }

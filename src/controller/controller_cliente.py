@@ -1,8 +1,7 @@
-import re
 from conexion.postgres_queries import PostgresQueries
 from model.clientes import Cliente
 from controller.controller_atendente import Controller_Atendente
-from utils import config
+from utils import config, validacoes_identidade as validar
 
 
 
@@ -172,23 +171,13 @@ class Controller_Cliente:
             postgres.close()
 
     def validar_texto(self, valor, campo: str) -> str:
-        if not isinstance(valor, str) or not valor.strip():
-            raise ValueError(f"{campo} é obrigatório.")
-        return valor.strip()
+        return validar.texto(valor, campo)
 
     def validar_email(self, email: str) -> str:
-        email = self.validar_texto(email, "Email").casefold()
-        if not re.fullmatch(r"[^@\s]+@[^@\s]+\.[^@\s]+", email):
-            raise ValueError("Informe um email válido.")
-        return email
+        return validar.email(email)
 
     def validar_telefone(self, telefone: str) -> str:
-        telefone = self.validar_texto(telefone, "Telefone")
-        if not re.fullmatch(r"[0-9+(). \-]+", telefone) or not any(c.isdigit() for c in telefone):
-            raise ValueError("Telefone deve conter dígitos e apenas símbolos usuais de telefone.")
-        return telefone
+        return validar.telefone(telefone)
 
     def validar_identificador(self, identificador: int) -> int:
-        if isinstance(identificador, bool) or not isinstance(identificador, int) or identificador <= 0:
-            raise ValueError("O identificador deve ser um inteiro positivo.")
-        return identificador
+        return validar.identificador(identificador)
