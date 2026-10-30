@@ -411,6 +411,44 @@ Faça que fique natural, porém funcional do jeito  que a estrutura pede
 
 Refatoração completa dos arquivos da frente da Pessoa 3 (`atendimentos.py`, `controller_atendimento.py`, `contratos_chamados.md` e `test_controller_atendimento.py`) adotando a estilística visual e convenções exatas de código do repositório original do Prof. Howard Roatti: remoção de docstrings prolixas, simplificação dos comentários em português natural, consultas SQL diretas, padronização de retorno e simplificação da documentação de integração para o grupo.
 
+## 016 - Tradução e explicação do aviso do GitHub
+
+- Data: 29/10/2026 (America/Sao_Paulo).
+- Fonte: usuário, via chat no Antigravity.
+- Ferramenta utilizada: Antigravity.
+- Modelo: Gemini 3.8 Flash (High), conforme disponibilizado pelo ambiente.
+- Effort configurado: High.
+
+### Prompt
+
+```text
+traduz [ricardo/desenvolvimento](https://github.com/Itzgm/Banco_de_dados_C2/tree/ricardo/desenvolvimento) had recent pushes 32 seconds ago
+```
+
+### Uso da resposta / resultado
+
+Tradução direta e explicação do aviso do GitHub informando que a branch recém-publicada recebeu envios recentes de código com sucesso e orientando sobre o botão de comparação/pull request exibido na interface web.
+
+## 017 - Consulta e exibição dos prompts registrados no GitHub
+
+- Data: 29/10/2026 (America/Sao_Paulo).
+- Fonte: usuário, via chat no Antigravity.
+- Ferramenta utilizada: Antigravity.
+- Modelo: Gemini 3.8 Flash (High), conforme disponibilizado pelo ambiente.
+- Effort configurado: High.
+
+### Prompt
+
+```text
+Mostra pra mim quais são os meus prompts que vc colocou la no github
+```
+
+### Uso da resposta / resultado
+
+Apresentação detalhada e organizada de todos os prompts registrados no arquivo `prompts.md` a partir do início da sessão do usuário (entradas 005 a 015 já publicadas no GitHub), com seus textos, datas e resultados obtidos.
+
+
+
 
 
 
