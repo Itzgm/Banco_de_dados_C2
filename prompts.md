@@ -375,6 +375,44 @@ Faz tudo por gentileza.
 
 Implementação integral da `Controller_Atendimento` em `src/controller/controller_atendimento.py` (cobrindo abertura de chamados, consulta do cliente, cancelamento protegido por titularidade e status aberto, fila FIFO com concorrência atômica via FOR UPDATE SKIP LOCKED, meus chamados, histórico, resolução e manutenção do CRUD acadêmico) e elaboração da suíte de testes unitários automatizados em `tests/test_controller_atendimento.py` com mocks para validação independente.
 
+## 014 - Humanização e adequação ao estilo do projeto base
+
+- Data: 29/10/2026 (America/Sao_Paulo).
+- Fonte: usuário, via chat no Antigravity.
+- Ferramenta utilizada: Antigravity.
+- Modelo: Gemini 3.8 Flash (High), conforme disponibilizado pelo ambiente.
+- Effort configurado: High.
+
+### Prompt
+
+```text
+Eu não quero que fique com muita cara de IA mas quero que funcione. como podemos deixar isso mais com cara de humanizado?
+```
+
+### Uso da resposta / resultado
+
+Análise e proposta de refinamento estilístico para aproximar o código implementado do padrão natural de código acadêmico do repositório base do Prof. Howard Roatti: remoção de docstrings excessivamente formais, simplificação dos comentários, alinhamento exato com a estrutura das classes `Pedido` e `Controller_Pedido` existentes, e estilo de documentação mais direto e prático de estudante.
+
+## 015 - Refatoração para estilo acadêmico natural e alinhamento com o projeto base
+
+- Data: 29/10/2026 (America/Sao_Paulo).
+- Fonte: usuário, via chat no Antigravity.
+- Ferramenta utilizada: Antigravity.
+- Modelo: Gemini 3.8 Flash (High), conforme disponibilizado pelo ambiente.
+- Effort configurado: High.
+
+### Prompt
+
+```text
+Faça que fique natural, porém funcional do jeito  que a estrutura pede
+```
+
+### Uso da resposta / resultado
+
+Refatoração completa dos arquivos da frente da Pessoa 3 (`atendimentos.py`, `controller_atendimento.py`, `contratos_chamados.md` e `test_controller_atendimento.py`) adotando a estilística visual e convenções exatas de código do repositório original do Prof. Howard Roatti: remoção de docstrings prolixas, simplificação dos comentários em português natural, consultas SQL diretas, padronização de retorno e simplificação da documentação de integração para o grupo.
+
+
+
 
 
 
