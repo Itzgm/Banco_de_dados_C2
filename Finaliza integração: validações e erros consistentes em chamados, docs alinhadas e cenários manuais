@@ -1,0 +1,17 @@
+## O que muda
+- Chamados passam a usar os validadores compartilhados de texto e identificador, com `ValueError` consistente entre os controllers.
+- Cancelamento bloqueia a linha (`for update`) e sinaliza falhas por exceção (`LookupError`, `PermissionError`, `RuntimeError`); a CLI avisa e atualiza a lista.
+- Atualização de chamado lança exceção em vez de imprimir e retornar `None`.
+- README voltado ao PostgreSQL local (sem Docker), com decisões e pendências registradas.
+- Novo `docs/testes_manuais.md` com os cenários de aceite manual.
+- Removidos `docs/documentacao_tecnica_avancada.md` e `docs/integracao_manifesto.json` (documentação só local e caminhos locais).
+
+## Não muda
+- Schema (`sql/create_tables_atendimento.sql`) intacto.
+- Senha do atendente continua em texto direto e visível na digitação.
+- Manutenção continua protegida por `MANUTENCAO_EMAILS`.
+- Único ponto de entrada: `src/principal.py`.
+
+## Verificação
+- `compileall` em `src` e `scripts`: OK.
+- Não foi executado contra o PostgreSQL; os cenários de `docs/testes_manuais.md` estão pendentes de execução na VM.
