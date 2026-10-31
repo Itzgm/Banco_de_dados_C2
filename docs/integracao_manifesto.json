@@ -1,0 +1,48 @@
+{
+  "origem_local": "base_exemplo",
+  "destino": "base_integrada",
+  "backup": "C:\\Users\\Natan\\Desktop\\trabalho_banco_de_dados\\backup_Banco_de_dados_C2_20261030_141934",
+  "branches": {
+    "ricardo": {
+      "branch": "origin/ricardo/desenvolvimento",
+      "commit": "24ee3c7db2b12a678ba80c7a1e116f45d0cb9451",
+      "copia": "C:\\Users\\Natan\\Desktop\\trabalho_banco_de_dados\\backup_Banco_de_dados_C2_20261030_141934\\branches_recebidas\\ricardo"
+    },
+    "davi": {
+      "branch": "origin/davi/desenvolvimento",
+      "commit": "fc339044791debaebef6cf8f47984a21b89f6f34",
+      "copia": "C:\\Users\\Natan\\Desktop\\trabalho_banco_de_dados\\backup_Banco_de_dados_C2_20261030_141934\\branches_recebidas\\davi"
+    }
+  },
+  "arquivos_integrados": [
+    {
+      "autor_branch": "ricardo",
+      "arquivo_original": "src/controller/controller_atendimento.py",
+      "arquivo_integrado": "src/controller/controller_atendimento.py",
+      "sha256_original": "e0e3659fb50cf2286aba18d30738178e3b2cdba26e474056f6c8e260f3d1644c",
+      "sha256_integrado": "03a6277eee7ee55fb1293854fdd5e938c5645586186659c67e7c1c2968abdad4"
+    },
+    {
+      "autor_branch": "ricardo",
+      "arquivo_original": "src/model/atendimentos.py",
+      "arquivo_integrado": "src/model/atendimentos.py",
+      "sha256_original": "813688cdc4604deabbd24190ad18be404d6d65359d908b770821f455ca4258af",
+      "sha256_integrado": "19176aea1f5fc28e84b40a384e5f2282b7aa1aecec3a01ab17c239285a974f68"
+    },
+    {
+      "autor_branch": "davi",
+      "arquivo_original": "src/cli/aplicacao.py",
+      "arquivo_integrado": "src/principal.py",
+      "sha256_original": "0de583e2cb35f0c5a14e6fd7fde6dc66cc12a1f3024189a642e25b33a2f77e01",
+      "sha256_integrado": "d5639f0a53d943b3c0747053af967f54e14be60d0f27378ae04c669a408f08c6"
+    },
+    {
+      "autor_branch": "davi",
+      "arquivo_original": "src/cli/entrada.py",
+      "arquivo_integrado": "src/utils/config.py",
+      "sha256_original": "86e903f6ce06265d30e1ba0d18478528a3c2f32e2779d32926804653358a272f",
+      "sha256_integrado": "0f3c13198f2eff5a1fed3d171de33985490ac9aae0d3b59724016b0044ca7339"
+    }
+  ],
+  "ultima_alteracao": "Comentários e docstrings removidos do código a pedido do usuário; lógica Python conferida por equivalência de AST."
+}
