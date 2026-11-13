@@ -2,7 +2,7 @@
 
 Este arquivo registra os prompts de trabalho, sua fonte e o uso dado às respostas. Os próximos prompts devem ser acrescentados ao final, preservando o histórico.
 
-O usuário solicitou o nome `prompts.md`; o edital menciona `PROMPTS.md`. Foi mantida a grafia solicitada pelo usuário, sem criar um segundo histórico com diferença apenas de maiúsculas/minúsculas.
+O arquivo foi consolidado como `PROMPTS.md`, nome citado na avaliação do professor. Este é o único arquivo de registro; o histórico anterior foi preservado.
 
 ## 001 - Leitura do edital e criação da estrutura inicial
 
@@ -182,3 +182,93 @@ fornecido foi usado na configuração local do Git. Não houve implementação
 ou alteração dos módulos de domínio dos demais integrantes. PostgreSQL real,
 VM, nomes restantes da equipe e vídeo continuam pendentes; o checklist não
 apresenta simulação como conclusão dessas etapas.
+
+
+
+## 005 - Planejamento do trabalho em equipe
+
+- Data do registro: 13/11/2026; data original das mensagens: não informada no histórico disponível.
+- Fonte: pedidos do usuário em conversa no ChatGPT Work.
+- Ferramenta: Codex no ChatGPT Work.
+- Modelo: GPT-6; identificador exato: não informado pela sessão.
+- Effort configurado: não informado pela sessão.
+- Tipo de registro: síntese retrospectiva; os textos abaixo não são transcrições literais.
+
+### Prompt reformulado
+
+> Analise o edital e o estado atual do projeto de banco de dados. Elabore um plano de execução para quatro integrantes, com divisão de responsabilidades, sequência de commits e instruções práticas para que cada pessoa saiba como contribuir. Em seguida, explique como acompanhar os requisitos e verificar a conformidade do trabalho com o documento.
+
+### Uso da resposta / resultado
+
+A resposta organizou tarefas e etapas para o grupo e apresentou uma forma de acompanhar os requisitos. Esta formulação foi preparada retrospectivamente a partir de pedidos enviados em mensagens separadas; não foi o texto literal usado na conversa.
+
+## 006 - Inspeção do repositório e próximos passos
+
+- Data do registro: 13/11/2026; data original da mensagem: não informada no histórico disponível.
+- Fonte: pedido do usuário em conversa no ChatGPT Work.
+- Ferramenta: Codex no ChatGPT Work, inspeção da sessão de desktop e integração GitHub conectada.
+- Modelo: GPT-6; identificador exato: não informado pela sessão.
+- Effort configurado: não informado pela sessão.
+- Tipo de registro: síntese retrospectiva; o texto abaixo não é transcrição literal.
+
+### Prompt reformulado
+
+> Inspecione o repositório aberto, identifique a branch e os arquivos alterados, resuma o que já foi feito e recomende os próximos passos para concluir o trabalho. Se a sessão local não estiver acessível, informe essa limitação e use o repositório remoto disponível para conferir o estado do projeto.
+
+### Uso da resposta / resultado
+
+Não havia uma janela de repositório aberta na sessão de desktop. O repositório remoto conectado foi consultado para verificar arquivos e branches e orientar os próximos passos. A formulação acima explicita a alternativa usada; não é uma transcrição literal da mensagem original.
+
+## 007 - Adequação ao domínio de atendimento ao cliente
+
+- Data do registro: 13/11/2026; data original da mensagem: não informada no histórico disponível.
+- Fonte: pedido do usuário em conversa no ChatGPT Work.
+- Ferramenta: Codex no ChatGPT Work e integração GitHub conectada.
+- Modelo: GPT-6; identificador exato: não informado pela sessão.
+- Effort configurado: não informado pela sessão.
+- Tipo de registro: síntese retrospectiva; o texto abaixo não é transcrição literal.
+
+### Prompt reformulado
+
+> Revise o projeto e adeque a implementação e a documentação ao contexto de atendimento ao cliente. Preserve os requisitos do edital, confira a coerência entre o domínio, o banco de dados e as funcionalidades e registre limitações que ainda dependam de validação.
+
+### Uso da resposta / resultado
+
+O projeto e a documentação foram direcionados ao cenário de atendimento ao cliente. A entrega informou quais validações não haviam sido realizadas. Esta síntese não substitui o histórico de alterações da branch.
+
+## 008 - Revisão após o retorno do professor
+
+- Data do registro: 13/11/2026 (UTC).
+- Fonte: avaliação do professor e pedidos do usuário em conversa no ChatGPT Work.
+- Ferramenta: Codex no ChatGPT Work e integração GitHub conectada.
+- Modelo: GPT-6; identificador exato: não informado pela sessão.
+- Effort configurado: não informado pela sessão.
+- Tipo de registro: síntese retrospectiva; o texto abaixo não é transcrição literal.
+
+### Contexto da avaliação
+
+O professor reconheceu como pontos fortes o DDL com relacionamentos e CHECK, o diagrama relacional, a splash com integrantes e contagem de registros, o CRUD PostgreSQL com psycopg2, os relatórios com GROUP BY e JOIN e o README com instruções para Linux/VM e vídeo. Apontou a ausência de um registro completo de prompts, a verificação reativa de chave estrangeira na exclusão, a necessidade de configuração de login para demonstrar o CRUD e dúvidas sobre a validação na VM e a exigência de SQL parametrizado. Também recomendou que os integrantes estejam preparados para explicar o código.
+
+### Prompt reformulado
+
+> Com base na avaliação do professor e no histórico disponível, organize o registro de uso de IA do projeto em um documento profissional. Preserve a distinção entre transcrição e síntese retrospectiva, não atribua ao usuário mensagens que ele não enviou e informe quando os metadados de modelo ou esforço não estiverem disponíveis. Registre também quais pontos da avaliação foram tratados nesta atualização e quais continuam pendentes.
+
+### Uso da resposta / resultado
+
+O histórico foi mantido e reorganizado com sínteses formais identificadas como retrospectivas, sem apresentá-las como transcrições literais. O uso de IA e a indisponibilidade de alguns metadados foram declarados. A avaliação do professor foi registrada como contexto fornecido pelo usuário. Esta alteração cuida do documento de prompts; não implementa as demais correções apontadas pelo professor.
+
+## 009 - Organização editorial solicitada pelo usuário
+
+- Data: 13/11/2026 (UTC).
+- Fonte: pedido do usuário em conversa no ChatGPT Work.
+- Ferramenta: Codex no ChatGPT Work e integração GitHub conectada.
+- Modelo: GPT-6; identificador exato: não informado pela sessão.
+- Effort configurado: não informado pela sessão.
+
+### Solicitação
+
+O usuário pediu que os pedidos em linguagem coloquial fossem substituídos por prompts profissionais. A reformulação foi feita como síntese retrospectiva, sem declarar que esses textos foram usados literalmente nem ocultar a participação de IA.
+
+### Uso da resposta / resultado
+
+As seções retrospectivas foram reescritas em linguagem profissional e identificadas como reformulações. O histórico anterior do arquivo foi mantido. Nenhum prompt foi inventado ou atribuído como transcrição literal.
